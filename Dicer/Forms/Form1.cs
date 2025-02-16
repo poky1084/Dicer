@@ -284,15 +284,15 @@ namespace Limbo
                 Lastbet = (decimal)(double)lua["nextbet"];
                 amount = Lastbet;
                 currencySelected = (string)lua["currency"];
-                target = (double)lua["target"];
+                target = (double)lua["chance"];
                 bethigh = (bool)lua["bethigh"];
-                TargetLabeL.Text = target.ToString("0.00") + "x";
+                TargetLabeL.Text = (99 / target).ToString("0.00") + "x";
             }
             catch (Exception e)
             {
                 ready = false;
                 bSta();
-                luaPrint("Please set 'nextbet = x' and 'target = x'  and 'bethigh = false' variable on top of script.");
+                luaPrint("Please set 'nextbet = x' and 'chance = x'  and 'bethigh = false' variable on top of script.");
             }
 
 
@@ -307,8 +307,12 @@ namespace Limbo
         }
 
         public void Log(Data response)
-        {
-            string[] row = { response.data.diceRoll.id, String.Format("{0}x|{1}", response.data.diceRoll.payoutMultiplier.ToString("0.00"), response.data.diceRoll.state.result.ToString("0.0000")), response.data.diceRoll.amount.ToString("0.00000000") + " " + currencySelected, (response.data.diceRoll.payout - response.data.diceRoll.amount).ToString("0.00000000"), response.data.diceRoll.game };
+        {string resultMultiplier = (99 / response.data.diceRoll.state.result).ToString("0.0000");
+            if(response.data.diceRoll.state.condition == "above")
+            {
+                resultMultiplier = (99 / (100 - response.data.diceRoll.state.result)).ToString("0.0000");
+            }
+            string[] row = { response.data.diceRoll.id, String.Format("{0}x|{1}", response.data.diceRoll.payoutMultiplier.ToString("0.00"), resultMultiplier), response.data.diceRoll.amount.ToString("0.00000000") + " " + currencySelected, (response.data.diceRoll.payout - response.data.diceRoll.amount).ToString("0.00000000"), response.data.diceRoll.game };
             var log = new ListViewItem(row);
             listView1.Items.Insert(0, log);
             if (listView1.Items.Count > 15)
@@ -710,14 +714,14 @@ namespace Limbo
 
                     if (bethigh == false)
                     {
-                        target = 99 / target;
+                        target = target;
 
                         cond = "below";
 
                     }
                     else
                     {
-                        target = 100 - 99 / target ;
+                        target = 100 - target ;
 
                         cond = "above";
 
@@ -799,7 +803,7 @@ namespace Limbo
                         decimal profitCurr = response.data.diceRoll.payout - response.data.diceRoll.amount;
                         currentProfit += response.data.diceRoll.payout - response.data.diceRoll.amount;
                         //profitLabel.Text = currentProfit.ToString("0.00000000");
-                        TargetLabeL.Text = response.data.diceRoll.state.multiplierTarget.ToString("0.00") + "x";
+                        TargetLabeL.Text = (99 / response.data.diceRoll.state.target).ToString("0.00") + "x";
                         ResultLabeL.Text = response.data.diceRoll.state.result.ToString("0.00");
 
                         last.condition = response.data.diceRoll.state.condition;
@@ -1422,7 +1426,7 @@ namespace Limbo
                 Lastbet = (decimal)(double)lua["nextbet"];
                 amount = Lastbet;
                 currencySelected = (string)lua["currency"];
-                target = (double)lua["target"];
+                target = (double)lua["chance"];
                 bethigh = (bool)lua["bethigh"];
 
             }
@@ -1525,7 +1529,7 @@ namespace Limbo
                     Lastbet = (decimal)(double)lua["nextbet"];
                     amount = Lastbet;
                     currencySelected = (string)lua["currency"];
-                    target = (double)lua["target"];
+                    target = (double)lua["chance"];
                     bethigh = (bool)lua["bethigh"];
                     balanceSim = (decimal)(double)lua["balance"];
                 }
@@ -1613,6 +1617,11 @@ namespace Limbo
         {
             UserAgent = textBox3.Text;
             Properties.Settings.Default.agent = UserAgent;
+        }
+
+        private void TargetLabeL_Click(object sender, EventArgs e)
+        {
+
         }
     }
     public static class ListViewExtensions

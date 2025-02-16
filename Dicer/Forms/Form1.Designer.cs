@@ -585,6 +585,7 @@
             this.TargetLabeL.Size = new System.Drawing.Size(80, 37);
             this.TargetLabeL.TabIndex = 7;
             this.TargetLabeL.Text = "0.00";
+            this.TargetLabeL.Click += new System.EventHandler(this.TargetLabeL_Click);
             // 
             // LogButton
             // 

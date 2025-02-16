@@ -61,9 +61,9 @@ namespace Limbo.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("nextbet  = 0.00000000 --sets your first bet.\r\ntarget = 2 -- set target\r\nbethigh =" +
-            " false \r\n\r\nfunction dobet()\r\n    if (win) then\r\n        print(\"result: \" .. last" +
-            "Bet.result) \r\n    end\r\nend")]
+        [global::System.Configuration.DefaultSettingValueAttribute("nextbet  = 0.00000000 --sets your first bet.\r\nchance = 49.5 -- set target\r\nbethig" +
+            "h = false \r\n\r\nfunction dobet()\r\n    if (win) then\r\n        print(\"result: \" .. l" +
+            "astBet.result) \r\n    end\r\nend")]
         public string textCode {
             get {
                 return ((string)(this["textCode"]));
